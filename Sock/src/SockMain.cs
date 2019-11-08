@@ -7,8 +7,6 @@ namespace Sock
     {
         static void Main(string[] args)
         {
-            InputHandler inHandler = new InputHandler();
-
             List<string> bullshit = new List<string>
             {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -26,20 +24,19 @@ namespace Sock
             };
 
             CurrentFinance myFinance = new CurrentFinance();
-            myFinance.addBudgetItem(new FinanceItem("Salary", 15000));
+            myFinance.addBudgetItem(new FinanceItem("Salary", 10000));
             myFinance.addBudgetItem(new FinanceItem("Buss", -800));
             myFinance.addBudgetItem(new FinanceItem("WiFi", -300));
             myFinance.addBudgetItem(new FinanceItem("Power", -1000));
             myFinance.addBudgetItem(new FinanceItem("Food", -2000));
 
-            myFinance.addLoan(new Loan("Mortgage", -1000000, 2.65, 5000, "Mtg"));
             myFinance.addLoan(new Loan("Student loan", -500000, 2.5, 3000, "Std"));
 
             CurrentFinancePage currentFinancePage = new CurrentFinancePage(myFinance);
 
-            int isAlive = 1;
+            string inputCommand = "";
 
-            while (isAlive != 0)
+            while (!inputCommand.ToLower().Equals("exit"))
             {
                 Render.clearScreen();
                 Render.renderFrame();
@@ -48,8 +45,8 @@ namespace Sock
                 Render.renderPageInfo(currentFinancePage.pageInfo);
                 currentFinancePage.renderContent();
 
-                Render.positionInputCursor();
-                isAlive = inHandler.processInput();
+                inputCommand = InputHandler.processInput("Command");
+                currentFinancePage.handleCommand(inputCommand);
                 // Do stuff
             }
 

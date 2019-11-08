@@ -7,26 +7,81 @@ namespace Sock
     public class CurrentFinancePage : IPage
     {
         public List<string> pageInfo { get; set; }
-        public List<string> commands { get; set; }
 
         CurrentFinance finance;
-        
+    
         public CurrentFinancePage(CurrentFinance finance)
         {
             this.finance = finance;
-
             this.pageInfo = new List<string>
             {
                 "Current Finances (Budget and loans)","",
                 "Here you can add, edit, or delete monthly budget items and loans.",
                 "Your monthly budget items are automatically updated with the loan principal values."
             };
+        }
 
-            this.commands = new List<string>
+        public void handleCommand(string command)
+        {
+            // TODO: Implement a more generic way to handle step operations
+            switch (command)
             {
-                "home",
-                "add",
-            };
+                case "new":
+                    string itemTitle = InputHandler.processInput("Enter item title");
+                    double itemAmount = double.Parse(
+                        InputHandler.processInput("Enter item amount")
+                    );
+                    finance.addBudgetItem(new FinanceItem(itemTitle, itemAmount));
+                    break;
+
+                case "edit":
+                    string oldItemName = InputHandler.processInput("Enter name of item you want to edit");
+
+                    FinanceItem editItem = null;
+                    foreach (FinanceItem item in finance.monthlyBudgetItems)
+                    {
+                        if (oldItemName.Equals(item.title))
+                        {
+                            editItem = item;
+                            break;
+                        }
+                    }
+
+                    if (editItem != null)
+                    {
+                        editItem.amount = double.Parse(
+                            InputHandler.processInput("Enter new item amount")
+                        );  
+                    }
+                    else
+                    {
+                        // TODO: Implement status window and set status
+                    }
+                    break;
+
+                case "delete":
+                    string itemName = InputHandler.processInput("Enter name of item you want to delete");
+
+                    FinanceItem deleteItem = null;
+                    foreach (FinanceItem item in finance.monthlyBudgetItems)
+                    {
+                        if (itemName.Equals(item.title))
+                        {
+                            deleteItem = item;
+                            break;
+                        }
+                    }
+
+                    if (deleteItem != null)
+                    {
+                       finance.monthlyBudgetItems.Remove(deleteItem); 
+                    }
+                    else
+                    {
+                        // TODO: Implement status window and set status
+                    }
+                    break;
+            }
         }
 
         /// -------------------------------------------------------------

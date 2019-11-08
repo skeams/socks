@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Sock
 {
     public class Loan : FinanceItem

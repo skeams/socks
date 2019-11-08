@@ -2,23 +2,19 @@ using System;
 
 namespace Sock
 {
-    public class InputHandler
+    public static class InputHandler
     {
-        public int processInput()
+        public static string processInput(string inputText)
         {
-            
-            Console.Write("Command: ");
-            string input = Console.ReadLine();
-            
+            // Read input
+            Render.positionInputCursor();
+            Console.Write(inputText + ": ");
+            string result = Console.ReadLine();
 
-            if (input.ToLower().Equals("exit"))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            // Clear input
+            Render.positionInputCursor();
+            Console.Write(new string(' ', inputText.Length + 2 + result.Length));
+            return  result;
         }
     }
 }
