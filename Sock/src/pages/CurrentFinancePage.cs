@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -21,6 +20,10 @@ namespace Sock
             };
         }
 
+        /// -------------------------------------------------------------
+        ///
+        /// Handle input commands
+        ///
         public void handleCommand(string command)
         {
             // TODO: Implement a more generic way to handle step operations
@@ -81,6 +84,9 @@ namespace Sock
                         // TODO: Implement status window and set status
                     }
                     break;
+                //
+                // TODO: TODO: TODO: TODO: Implement similar for loans
+                //
             }
         }
 

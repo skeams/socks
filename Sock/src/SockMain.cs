@@ -33,6 +33,7 @@ namespace Sock
             myFinance.addLoan(new Loan("Student loan", -500000, 2.5, 3000, "Std"));
 
             CurrentFinancePage currentFinancePage = new CurrentFinancePage(myFinance);
+            DashboardPage dashboardPage = new DashboardPage(myFinance);
 
             string inputCommand = "";
 
@@ -42,11 +43,15 @@ namespace Sock
                 Render.renderFrame();
                 // Render.renderColumnContent(bullshit);
 
-                Render.renderPageInfo(currentFinancePage.pageInfo);
-                currentFinancePage.renderContent();
+                Render.renderPageInfo(dashboardPage.pageInfo);
+                dashboardPage.renderContent();
+
+                // Render.renderPageInfo(currentFinancePage.pageInfo);
+                // currentFinancePage.renderContent();
 
                 inputCommand = InputHandler.processInput("Command");
-                currentFinancePage.handleCommand(inputCommand);
+                // currentFinancePage.handleCommand(inputCommand);
+                dashboardPage.handleCommand(inputCommand);
                 // Do stuff
             }
 
