@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/martin/Workspace/Sock/Sock.csproj",
+      "projectUniqueName": "/home/martin/Workspace/socks/Sock/Sock.csproj",
       "projectName": "Sock",
-      "projectPath": "/home/martin/Workspace/Sock/Sock.csproj",
+      "projectPath": "/home/martin/Workspace/socks/Sock/Sock.csproj",
       "packagesPath": "/home/martin/.nuget/packages/",
-      "outputPath": "/home/martin/Workspace/Sock/obj/",
+      "outputPath": "/home/martin/Workspace/socks/Sock/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/martin/.nuget/NuGet/NuGet.Config"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sock
 {
@@ -6,10 +7,9 @@ namespace Sock
     {
         static void Main(string[] args)
         {
-            Render render = new Render();
             InputHandler inHandler = new InputHandler();
 
-            string[] bullshit =
+            List<string> bullshit = new List<string>
             {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor",
@@ -25,15 +25,27 @@ namespace Sock
                 "sunt in culpa qui officia deserunt mollit anim id est laborum.",
             };
 
+            CurrentFinance myFinance = new CurrentFinance();
+            myFinance.addBudgetItem(new FinanceItem("Buss", -800));
+            myFinance.addBudgetItem(new FinanceItem("WiFi", -300));
+            myFinance.addBudgetItem(new FinanceItem("Power", -1000));
+
+            Loan mortgage = new Loan("Mortgage", -1500000, 2.65, 8000, "Mtg");
+            myFinance.addLoan(mortgage);
+
+            CurrentFinancePage currentFinancePage = new CurrentFinancePage(myFinance);
+
             int isAlive = 1;
 
             while (isAlive != 0)
             {
-                render.clearScreen();
-                render.renderFrame();
-                render.renderColumnContent(bullshit);
+                Render.clearScreen();
+                Render.renderFrame();
+                // Render.renderColumnContent(bullshit);
 
-                render.positionInputCursor();
+                currentFinancePage.renderContent();
+
+                Render.positionInputCursor();
                 isAlive = inHandler.processInput();
                 // Do stuff
             }

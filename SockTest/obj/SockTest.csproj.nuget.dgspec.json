@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/martin/Workspace/SockTest/SockTest.csproj": {}
+    "/home/martin/Workspace/socks/SockTest/SockTest.csproj": {}
   },
   "projects": {
-    "/home/martin/Workspace/Sock/Sock.csproj": {
+    "/home/martin/Workspace/socks/Sock/Sock.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/martin/Workspace/Sock/Sock.csproj",
+        "projectUniqueName": "/home/martin/Workspace/socks/Sock/Sock.csproj",
         "projectName": "Sock",
-        "projectPath": "/home/martin/Workspace/Sock/Sock.csproj",
+        "projectPath": "/home/martin/Workspace/socks/Sock/Sock.csproj",
         "packagesPath": "/home/martin/.nuget/packages/",
-        "outputPath": "/home/martin/Workspace/Sock/obj/",
+        "outputPath": "/home/martin/Workspace/socks/Sock/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/martin/.nuget/NuGet/NuGet.Config"
@@ -54,14 +54,14 @@
         }
       }
     },
-    "/home/martin/Workspace/SockTest/SockTest.csproj": {
+    "/home/martin/Workspace/socks/SockTest/SockTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/martin/Workspace/SockTest/SockTest.csproj",
+        "projectUniqueName": "/home/martin/Workspace/socks/SockTest/SockTest.csproj",
         "projectName": "SockTest",
-        "projectPath": "/home/martin/Workspace/SockTest/SockTest.csproj",
+        "projectPath": "/home/martin/Workspace/socks/SockTest/SockTest.csproj",
         "packagesPath": "/home/martin/.nuget/packages/",
-        "outputPath": "/home/martin/Workspace/SockTest/obj/",
+        "outputPath": "/home/martin/Workspace/socks/SockTest/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/martin/.nuget/NuGet/NuGet.Config"
@@ -75,8 +75,8 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "/home/martin/Workspace/Sock/Sock.csproj": {
-                "projectPath": "/home/martin/Workspace/Sock/Sock.csproj"
+              "/home/martin/Workspace/socks/Sock/Sock.csproj": {
+                "projectPath": "/home/martin/Workspace/socks/Sock/Sock.csproj"
               }
             }
           }

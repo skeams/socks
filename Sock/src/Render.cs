@@ -3,29 +3,29 @@ using System.Collections.Generic;
 
 namespace Sock
 {
-    public class Render
+    public static class Render
     {
-        readonly ConsoleColor frameColor = ConsoleColor.Green;
-        readonly ConsoleColor bannerColor = ConsoleColor.DarkCyan;
-        readonly ConsoleColor textColor = ConsoleColor.White;
+        static readonly ConsoleColor frameColor = ConsoleColor.Green;
+        static readonly ConsoleColor bannerColor = ConsoleColor.DarkCyan;
+        static readonly ConsoleColor textColor = ConsoleColor.White;
 
-        readonly string frameVertical = "\u2551";
-        readonly string frameHorizontal = "\u2550";
+        static readonly string frameVertical = "\u2551";
+        static readonly string frameHorizontal = "\u2550";
 
-        readonly string frameTopLeft = "\u2554";
-        readonly string frameTopRight = "\u2557";
-        readonly string frameBottomLeft = "\u255A";
-        readonly string frameBottomRight = "\u255D";
+        static readonly string frameTopLeft = "\u2554";
+        static readonly string frameTopRight = "\u2557";
+        static readonly string frameBottomLeft = "\u255A";
+        static readonly string frameBottomRight = "\u255D";
 
-        readonly string frameJoinRight = "\u2560";
-        readonly string frameJoinLeft = "\u2563";
+        static readonly string frameJoinRight = "\u2560";
+        static readonly string frameJoinLeft = "\u2563";
         // private readonly string frameJoinBottom = "\u2566";
         // private readonly string frameJoinTop = "\u2569";
 
-        readonly int xPadding = 3;
-        readonly int yPadding = 1;
+        static readonly int xPadding = 3;
+        static readonly int yPadding = 1;
 
-        readonly string[] banner =
+        static readonly string[] banner =
         {
             " ____             _",
             "/ ___|  ___   ___| | _____",
@@ -34,28 +34,31 @@ namespace Sock
             "|____/ \'___/ \'___|_|\'_\'___/",
         };
 
-        /*
-            Clears the Screen
-        */
-        public void clearScreen()
+        /// -------------------------------------------------------------
+        ///
+        ///  Clears the Screen
+        ///
+        public static void clearScreen()
         {
             Console.Clear();
         }
 
-        /*
-            Helper method to position cursor at correct position for input.
-        */
-        public void positionInputCursor()
+        /// -------------------------------------------------------------
+        ///
+        ///  Helper method to position cursor at correct position for input.
+        ///
+        public static void positionInputCursor()
         {
             Console.SetCursorPosition(xPadding + 3, Console.WindowHeight - yPadding - 3);
         }
 
-        /*
-            Renders contentLines in columns.
-         */
-        public void renderColumnContent(string[] contentLines)
+        /// -------------------------------------------------------------
+        ///
+        ///    Renders contentLines in columns.
+        ///
+        public static void renderColumnContent(List<string> contentLines)
         {
-            int columnWidth = 20; // TODO: Move to input props.
+            int columnWidth = 40; // TODO: Move to input props.
             int columnSpacing = 2;
 
             List<string> formattedContentLines = formatLines(contentLines, columnWidth);
@@ -92,12 +95,12 @@ namespace Sock
             }
         }
 
-        /*
-            Splits lines when they are longer than the columnWidth prop.
-
-            Line is split on the first space occurring before the limit.
-         */
-        public List<string> formatLines(string[] lines, int columnWidth)
+        /// -------------------------------------------------------------
+        ///
+        /// Splits lines when they are longer than the columnWidth prop.
+        /// Line is split on the first space occurring before the limit.
+        ///
+        public static List<string> formatLines(List<string> lines, int columnWidth)
         {
             List<string> formattedContentLines = new List<string>();
 
@@ -132,10 +135,11 @@ namespace Sock
             return formattedContentLines;
         }
 
-        /*
-            Renders Frame and banner
-         */
-        public void renderFrame()
+        /// -------------------------------------------------------------
+        ///
+        /// Renders Frame and banner
+        ///
+        public static void renderFrame()
         {
             int xMax = Console.WindowWidth - xPadding;
             int yMax = Console.WindowHeight - yPadding;

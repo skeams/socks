@@ -4,7 +4,8 @@ namespace Sock
 {
     public class InputHandler
     {
-        public int processInput() {
+        public int processInput()
+        {
             
             Console.Write("Command: ");
             string input = Console.ReadLine();
