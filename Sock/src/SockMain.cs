@@ -26,12 +26,14 @@ namespace Sock
             };
 
             CurrentFinance myFinance = new CurrentFinance();
+            myFinance.addBudgetItem(new FinanceItem("Salary", 15000));
             myFinance.addBudgetItem(new FinanceItem("Buss", -800));
             myFinance.addBudgetItem(new FinanceItem("WiFi", -300));
             myFinance.addBudgetItem(new FinanceItem("Power", -1000));
+            myFinance.addBudgetItem(new FinanceItem("Food", -2000));
 
-            Loan mortgage = new Loan("Mortgage", -1500000, 2.65, 8000, "Mtg");
-            myFinance.addLoan(mortgage);
+            myFinance.addLoan(new Loan("Mortgage", -1000000, 2.65, 5000, "Mtg"));
+            myFinance.addLoan(new Loan("Student loan", -500000, 2.5, 3000, "Std"));
 
             CurrentFinancePage currentFinancePage = new CurrentFinancePage(myFinance);
 
@@ -43,6 +45,7 @@ namespace Sock
                 Render.renderFrame();
                 // Render.renderColumnContent(bullshit);
 
+                Render.renderPageInfo(currentFinancePage.pageInfo);
                 currentFinancePage.renderContent();
 
                 Render.positionInputCursor();

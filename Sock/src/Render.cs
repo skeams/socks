@@ -8,6 +8,7 @@ namespace Sock
         static readonly ConsoleColor frameColor = ConsoleColor.Green;
         static readonly ConsoleColor bannerColor = ConsoleColor.DarkCyan;
         static readonly ConsoleColor textColor = ConsoleColor.White;
+        static readonly ConsoleColor pageTitleColor = ConsoleColor.Magenta;
 
         static readonly string frameVertical = "\u2551";
         static readonly string frameHorizontal = "\u2550";
@@ -19,8 +20,8 @@ namespace Sock
 
         static readonly string frameJoinRight = "\u2560";
         static readonly string frameJoinLeft = "\u2563";
-        // private readonly string frameJoinBottom = "\u2566";
-        // private readonly string frameJoinTop = "\u2569";
+        static readonly string frameJoinBottom = "\u2566";
+        static readonly string frameJoinTop = "\u2569";
 
         static readonly int xPadding = 3;
         static readonly int yPadding = 1;
@@ -36,7 +37,7 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        ///  Clears the Screen
+        /// Clears the Screen
         ///
         public static void clearScreen()
         {
@@ -45,7 +46,7 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        ///  Helper method to position cursor at correct position for input.
+        /// Helper method to position cursor at correct position for input.
         ///
         public static void positionInputCursor()
         {
@@ -54,7 +55,7 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        ///    Renders contentLines in columns.
+        /// Renders contentLines in columns.
         ///
         public static void renderColumnContent(List<string> contentLines)
         {
@@ -137,6 +138,29 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
+        /// Renders Page info
+        ///
+        public static void renderPageInfo(List<string> infoLines)
+        {
+            List<string> formattedPageInfo = formatLines(infoLines, Console.WindowWidth - (xPadding * 2) - 35);
+
+            for (int y = 0; y < formattedPageInfo.Count; y++)
+            {
+                if (y == 0)
+                {
+                    Console.ForegroundColor = pageTitleColor;
+                }
+                else if (y == 1)
+                {
+                    Console.ForegroundColor = textColor;
+                }
+                Console.SetCursorPosition(xPadding + 37, yPadding + 2 + y);
+                Console.Write(formattedPageInfo[y]);
+            }
+        }
+
+        /// -------------------------------------------------------------
+        ///
         /// Renders Frame and banner
         ///
         public static void renderFrame()
@@ -190,6 +214,17 @@ namespace Sock
                 Console.Write(frameHorizontal);
             }
             Console.Write(frameJoinLeft);
+
+            // Banner divider line
+            Console.SetCursorPosition(xPadding + 35, yPadding);
+            Console.Write(frameJoinBottom);
+            for (int y = yPadding + 1; y < yPadding + 7; y++)
+            {
+                Console.SetCursorPosition(xPadding + 35, y);
+                Console.Write(frameVertical);
+            }
+            Console.SetCursorPosition(xPadding + 35, yPadding + 7);
+            Console.Write(frameJoinTop);
 
             // Banner
             Console.ForegroundColor = bannerColor;

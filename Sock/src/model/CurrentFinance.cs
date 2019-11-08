@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sock
 {
@@ -36,6 +37,15 @@ namespace Sock
             double downPayment = - loan.principal - interest;
             addBudgetItem(new FinanceItem(loan.shortName + "." + "interest", interest));
             addBudgetItem(new FinanceItem(loan.shortName + "." + "downpayment", downPayment));
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        /// Returns sum of all monthly budget items
+        ///
+        public double getMonthlyBudgetSum()
+        {
+            return monthlyBudgetItems.Sum(item => item.amount);
         }
     }
 }
