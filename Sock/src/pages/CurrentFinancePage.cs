@@ -47,7 +47,7 @@ namespace Sock
                     break;
 
                 case "delete loan":
-                    // newLoanAction();
+                    deleteLoanAction();
                     break;
             }
         }
@@ -58,15 +58,9 @@ namespace Sock
         {
             string title = InputHandler.processInput("Enter loan title");
             string abr = InputHandler.processInput("Enter loan abr (3 letters)");
-            double amount = double.Parse(
-                InputHandler.processInput("Enter loan amount")
-            );
-            double interest = double.Parse(
-                InputHandler.processInput("Enter loan interest")
-            );
-            double monthlyPayment = double.Parse(
-                InputHandler.processInput("Enter monthly payment")
-            );
+            double amount = InputHandler.processNumberInput("Enter loan amount", 0);
+            double interest = InputHandler.processNumberInput("Enter loan interest", 0);
+            double monthlyPayment = InputHandler.processNumberInput("Enter monthly payment", 0);
             finance.addLoan(new Loan(title, amount, interest, monthlyPayment, abr));
         }
 
@@ -75,16 +69,7 @@ namespace Sock
         public void editLoanAction()
         {
             string abr = InputHandler.processInput("Enter loan abr.");
-            
-            Loan editLoan = null;
-            foreach (Loan loan in finance.loans)
-            {
-                if (string.Equals(abr, loan.shortName, System.StringComparison.OrdinalIgnoreCase))
-                {
-                    editLoan = loan;
-                    break;
-                }
-            }
+            Loan editLoan = finance.getLoan(abr);
 
             if (editLoan != null)
             {
@@ -97,36 +82,37 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
+        public void deleteLoanAction()
+        {
+            string abr = InputHandler.processInput("Enter loan abr.");
+            Loan deleteLoan = finance.getLoan(abr);
+
+            if (deleteLoan != null)
+            {
+                finance.deleteLoanBudgetItems(deleteLoan);
+                finance.loans.Remove(deleteLoan);
+            }
+        }
+
+        /// -------------------------------------------------------------
+        ///
         public void newItemAction()
         {
             string itemTitle = InputHandler.processInput("Enter item title");
-            double itemAmount = double.Parse(
-                InputHandler.processInput("Enter item amount")
-            );
-            finance.addBudgetItem(new FinanceItem(itemTitle, itemAmount));
+            double itemAmount = InputHandler.processNumberInput("Enter item amount", 0);
+            finance.monthlyBudgetItems.Add(new FinanceItem(itemTitle, itemAmount));
         }
 
         /// -------------------------------------------------------------
         ///
         public void editItemAction()
         {
-            string oldItemName = InputHandler.processInput("Enter name of item you want to edit");
-
-            FinanceItem editItem = null;
-            foreach (FinanceItem item in finance.monthlyBudgetItems)
-            {
-                if (string.Equals(oldItemName, item.title, System.StringComparison.OrdinalIgnoreCase))
-                {
-                    editItem = item;
-                    break;
-                }
-            }
+            string itemName = InputHandler.processInput("Enter name of item you want to edit");
+            FinanceItem editItem = finance.getItem(itemName);
 
             if (editItem != null)
             {
-                editItem.amount = double.Parse(
-                    InputHandler.processInput("Enter new item amount")
-                );  
+                editItem.amount =InputHandler.processNumberInput("Enter new item amount", editItem.amount);
             }
         }
 
@@ -135,16 +121,7 @@ namespace Sock
         public void deleteItemAction()
         {
             string itemName = InputHandler.processInput("Enter name of item you want to delete");
-
-            FinanceItem deleteItem = null;
-            foreach (FinanceItem item in finance.monthlyBudgetItems)
-            {
-                if (string.Equals(itemName, item.title, System.StringComparison.OrdinalIgnoreCase))
-                {
-                    deleteItem = item;
-                    break;
-                }
-            }
+            FinanceItem deleteItem = finance.getItem(itemName);
 
             if (deleteItem != null)
             {
