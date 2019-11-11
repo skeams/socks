@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Sock
 {
-    public class CurrentFinancePage : IPage
+    public class CurrentFinancePage : Page
     {
-        public List<string> pageInfo { get; set; }
+        public override List<string> pageInfo { get; set; }
 
         CurrentFinance finance;
     
@@ -22,7 +22,7 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        public void handleCommand(string command)
+        public override void handleCommand(string command)
         {
             switch (command)
             {
@@ -143,7 +143,7 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        public void renderContent()
+        public override void renderContent()
         {
             int lineWidth = 30;
 
@@ -169,7 +169,7 @@ namespace Sock
 
             foreach (Loan loan in finance.loans)
             {
-                financeData.Add(formatAmountLine(loan.title, loan.amount, lineWidth));
+                financeData.Add(formatAmountLine(loan.title + " (" + loan.shortName + ")", loan.amount, lineWidth));
                 financeData.Add(formatAmountLine(" - Montly payment", loan.monthlyPayment, lineWidth));
                 financeData.Add(formatAmountLine(" - Interest %", loan.interestPercentage, lineWidth, 2));
                 financeData.Add(formatAmountLine(" - Yearly principal", loan.calculatePrincipal(12), lineWidth));
@@ -182,7 +182,7 @@ namespace Sock
             financeData.Add("~~~~~~~~~  Savings  ~~~~~~~~~~");
             financeData.Add("");
             financeData.Add(formatAmountLine("Current savings", finance.currentSavings, lineWidth));
-            financeData.Add(formatAmountLine("Savings growth %", finance.savingsGrowthRate, lineWidth));
+            financeData.Add(formatAmountLine("Savings growth %", finance.savingsGrowthRate, lineWidth, 2));
             financeData.Add(formatAmountLine("Yearly growth", finance.calculateSavings(12), lineWidth));
 
             Render.renderColumnContent(financeData);

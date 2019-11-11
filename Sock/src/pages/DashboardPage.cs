@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Sock
 {
-    public class DashboardPage : IPage
+    public class DashboardPage : Page
     {
-        public List<string> pageInfo { get; set; }
+        public override List<string> pageInfo { get; set; }
 
         CurrentFinance finance;
     
@@ -18,17 +18,17 @@ namespace Sock
             };
         }
 
-        public void handleCommand(string command)
+        public override void handleCommand(string command)
         {
             switch (command)
             {
-                case "budget":
+                case "mojo":
 
                     break;
             }
         }
 
-        public void renderContent()
+        public override void renderContent()
         {
             Render.renderColumnContent(new List<string>{"Welcome to Socks!"});
         }
