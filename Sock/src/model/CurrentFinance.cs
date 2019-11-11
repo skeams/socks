@@ -8,6 +8,9 @@ namespace Sock
         public List<Loan> loans;
         public List<FinanceItem> monthlyBudgetItems;
 
+        readonly string interestDesc = ".interest";
+        readonly string principalDesc = ".principal";
+
         public CurrentFinance()
         {
             this.loans = new List<Loan>();
@@ -34,14 +37,35 @@ namespace Sock
             loans.Add(loan);
 
             double interest = loan.getInterestMonth();
-            double downPayment = - loan.principal - interest;
-            addBudgetItem(new FinanceItem(loan.shortName + "." + "interest", interest));
-            addBudgetItem(new FinanceItem(loan.shortName + "." + "downpayment", downPayment));
+            double principal = - loan.monthlyPayment - interest;
+            addBudgetItem(new FinanceItem(loan.shortName + interestDesc, interest));
+            addBudgetItem(new FinanceItem(loan.shortName + principalDesc, principal));
         }
 
         /// -------------------------------------------------------------
         ///
-        /// Returns sum of all monthly budget items
+        public void refreshLoanBudgetItems(Loan loan)
+        {
+            double interest = loan.getInterestMonth();
+            double principal = - loan.monthlyPayment - interest;
+
+            foreach (FinanceItem item in monthlyBudgetItems)
+            {
+                if (item.title.Substring(0, 3).Equals(loan.shortName))
+                {
+                    if (item.title.Substring(3).Equals(interestDesc))
+                    {
+                        item.amount = interest;
+                    }
+                    if (item.title.Substring(3).Equals(principalDesc))
+                    {
+                        item.amount = principal;
+                    }
+                }
+            }
+        }
+
+        /// -------------------------------------------------------------
         ///
         public double getMonthlyBudgetSum()
         {

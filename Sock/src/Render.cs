@@ -62,6 +62,9 @@ namespace Sock
             int columnWidth = 40; // TODO: Move to input props.
             int columnSpacing = 2;
 
+            int xContentPadding = 2;
+            int yContentPadding = 1;
+
             List<string> formattedContentLines = formatLines(contentLines, columnWidth);
 
             Console.ForegroundColor = textColor;
@@ -69,17 +72,17 @@ namespace Sock
             int xMax = Console.WindowWidth - xPadding;
             int yMax = Console.WindowHeight - yPadding;
 
-            int contentMinX = xPadding + 1 + columnSpacing;
+            int contentMinX = xPadding + 1 + xContentPadding;
             int contentMinY = yPadding + 8;
             int contentMaxX = xMax - 10;
-            int contentMaxY = yMax - 6;
+            int contentMaxY = yMax - 6 - yContentPadding;
 
             int rowIndex = 0;
             int columnIndex = 0;
             
             foreach (string line in formattedContentLines)
             {
-                Console.SetCursorPosition(contentMinX + (columnIndex * (columnWidth + columnSpacing)), contentMinY + rowIndex);
+                Console.SetCursorPosition(contentMinX + (columnIndex * (columnWidth + columnSpacing)), contentMinY + rowIndex + yContentPadding);
                 Console.Write(line);
 
                 rowIndex++;

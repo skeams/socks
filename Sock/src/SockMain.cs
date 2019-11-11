@@ -24,13 +24,14 @@ namespace Sock
             };
 
             CurrentFinance myFinance = new CurrentFinance();
-            myFinance.addBudgetItem(new FinanceItem("Salary", 10000));
+            myFinance.addBudgetItem(new FinanceItem("Salary", 15000));
             myFinance.addBudgetItem(new FinanceItem("Buss", -800));
             myFinance.addBudgetItem(new FinanceItem("WiFi", -300));
             myFinance.addBudgetItem(new FinanceItem("Power", -1000));
             myFinance.addBudgetItem(new FinanceItem("Food", -2000));
 
-            myFinance.addLoan(new Loan("Student loan", -500000, 2.5, 3000, "Std"));
+            myFinance.addLoan(new Loan("Mortgage", -1500000, 2.65, 8000, "Mtg"));
+            myFinance.addLoan(new Loan("Student loan", -160000, 2.5, 1000, "Std"));
 
             CurrentFinancePage currentFinancePage = new CurrentFinancePage(myFinance);
             DashboardPage dashboardPage = new DashboardPage(myFinance);
@@ -43,15 +44,15 @@ namespace Sock
                 Render.renderFrame();
                 // Render.renderColumnContent(bullshit);
 
-                Render.renderPageInfo(dashboardPage.pageInfo);
-                dashboardPage.renderContent();
+                // Render.renderPageInfo(dashboardPage.pageInfo);
+                // dashboardPage.renderContent();
 
-                // Render.renderPageInfo(currentFinancePage.pageInfo);
-                // currentFinancePage.renderContent();
+                Render.renderPageInfo(currentFinancePage.pageInfo);
+                currentFinancePage.renderContent();
 
                 inputCommand = InputHandler.processInput("Command");
-                // currentFinancePage.handleCommand(inputCommand);
-                dashboardPage.handleCommand(inputCommand);
+                currentFinancePage.handleCommand(inputCommand);
+                // dashboardPage.handleCommand(inputCommand);
                 // Do stuff
             }
 

@@ -14,7 +14,7 @@ namespace Sock
             this.pageInfo = new List<string>
             {
                 "Welcome to Socks!","",
-                "In this program, you can play around and shit with your budget and loans.",
+                "More info will follow.",
             };
         }
 
