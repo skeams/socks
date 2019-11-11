@@ -7,7 +7,7 @@ namespace Sock
         public override List<string> pageInfo { get; set; }
 
         CurrentFinance finance;
-    
+
         public DashboardPage(CurrentFinance finance)
         {
             this.finance = finance;
@@ -22,8 +22,7 @@ namespace Sock
         {
             switch (command)
             {
-                case "mojo":
-
+                case "about":
                     break;
             }
         }

@@ -6,11 +6,13 @@ namespace Sock
 
         CurrentFinancePage currentFinancePage;
         DashboardPage dashboardPage;
+        ForecastPage forecastPage;
 
         public NavigationControl(CurrentFinance finance)
         {
             this.currentFinancePage = new CurrentFinancePage(finance);
             this.dashboardPage = new DashboardPage(finance);
+            this.forecastPage = new ForecastPage(finance);
 
             this.currentPage = this.dashboardPage;
         }
@@ -23,14 +25,18 @@ namespace Sock
             {
                 case "budget":
                     this.currentPage = currentFinancePage;
-                    break;
+                    return true;
 
                 case "back":
                 case "home":
                     this.currentPage = dashboardPage;
-                    break;
+                    return true;
 
+                case "forecast":
+                    this.currentPage = forecastPage;
+                    return true;
             }
+            
             return false;
         }
     }

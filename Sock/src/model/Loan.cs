@@ -15,14 +15,15 @@ namespace Sock
             this.shortName = shortName;
         }
 
+        /// -------------------------------------------------------------
+        ///
         public double getInterestMonth()
         {
             return (amount * interestPercentage / 100) / 12;
         }
 
-        /// <summary>
-        /// Calculates sum of principal payments over X months
-        /// </summary>
+        /// -------------------------------------------------------------
+        ///
         public double calculatePrincipal(int months)
         {
             double remainingAmount = amount;
@@ -31,10 +32,17 @@ namespace Sock
             for (int m = 0; m < months; m++)
             {
                 interest = (-remainingAmount * interestPercentage / 100) / 12;
-                remainingAmount = remainingAmount - (monthlyPayment - interest);
+                remainingAmount = remainingAmount + (monthlyPayment - interest);
             }
 
-            return  amount - remainingAmount;
+            return System.Math.Abs(amount - remainingAmount);
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public Loan clone()
+        {
+            return new Loan(this.title, this.amount, this.interestPercentage, this.monthlyPayment, this.shortName);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Sock
     {
         public List<Loan> loans;
         public List<FinanceItem> monthlyBudgetItems;
+        public List<FinanceItem> monthlyIntrPrinc;
         public double currentSavings;
         public double savingsGrowthRate;
 
@@ -17,6 +18,7 @@ namespace Sock
         {
             this.loans = new List<Loan>();
             this.monthlyBudgetItems = new List<FinanceItem>();
+            this.monthlyIntrPrinc = new List<FinanceItem>();
             this.currentSavings = 0;
             this.savingsGrowthRate = 0;
         }
@@ -29,8 +31,8 @@ namespace Sock
 
             double interest = loan.getInterestMonth();
             double principal = -loan.monthlyPayment - interest;
-            monthlyBudgetItems.Add(new FinanceItem(loan.shortName + interestDesc, interest));
-            monthlyBudgetItems.Add(new FinanceItem(loan.shortName + principalDesc, principal));
+            monthlyIntrPrinc.Add(new FinanceItem(loan.shortName + interestDesc, interest));
+            monthlyIntrPrinc.Add(new FinanceItem(loan.shortName + principalDesc, principal));
         }
 
         /// -------------------------------------------------------------
@@ -70,7 +72,7 @@ namespace Sock
             double interest = loan.getInterestMonth();
             double principal = -loan.monthlyPayment - interest;
 
-            foreach (FinanceItem item in monthlyBudgetItems)
+            foreach (FinanceItem item in monthlyIntrPrinc)
             {
                 if (item.title.Substring(0, 3).Equals(loan.shortName))
                 {
@@ -91,7 +93,7 @@ namespace Sock
         public void deleteLoanBudgetItems(Loan loan)
         {
             List<FinanceItem> deleteItems = new List<FinanceItem>();
-            foreach (FinanceItem item in monthlyBudgetItems)
+            foreach (FinanceItem item in monthlyIntrPrinc)
             {
                 if (item.title.Substring(0, 3).Equals(loan.shortName))
                 {
@@ -101,13 +103,20 @@ namespace Sock
 
             foreach (FinanceItem deleteItem in deleteItems)
             {
-                monthlyBudgetItems.Remove(deleteItem);
+                monthlyIntrPrinc.Remove(deleteItem);
             }
         }
 
         /// -------------------------------------------------------------
         ///
-        public double getMonthlyBudgetSum()
+        public double getMonthlyNetSum()
+        {
+            return monthlyBudgetItems.Concat(monthlyIntrPrinc).Sum(item => item.amount);
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public double getMonthlyBudgetItemsSum()
         {
             return monthlyBudgetItems.Sum(item => item.amount);
         }
@@ -117,11 +126,12 @@ namespace Sock
         public double calculateSavings(int months)
         {
             double estimatedSavings = currentSavings;
+            double monthlySavings = getMonthlyNetSum();
 
             for (int m = 0; m < months; m++)
             {
                 estimatedSavings += (estimatedSavings * savingsGrowthRate / 100) / 12;
-                estimatedSavings += getMonthlyBudgetSum();
+                estimatedSavings += monthlySavings;
             }
 
             return estimatedSavings - currentSavings;

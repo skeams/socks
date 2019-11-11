@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Collections.Generic;
 
 namespace Sock
@@ -153,12 +152,17 @@ namespace Sock
 
             foreach (FinanceItem budgetItem in finance.monthlyBudgetItems)
             {
-                financeData.Add(formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
+                financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
+            }
+            financeData.Add("");
+            foreach (FinanceItem budgetItem in finance.monthlyIntrPrinc)
+            {
+                financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
             }
 
             financeData.Add("______________________________");
             financeData.Add("");
-            financeData.Add(formatAmountLine("Saving/Net Amount", finance.getMonthlyBudgetSum(), lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Saving/Net Amount", finance.getMonthlyNetSum(), lineWidth));
 
             financeData.Add("");
             financeData.Add("");
@@ -169,10 +173,10 @@ namespace Sock
 
             foreach (Loan loan in finance.loans)
             {
-                financeData.Add(formatAmountLine(loan.title + " (" + loan.shortName + ")", loan.amount, lineWidth));
-                financeData.Add(formatAmountLine(" - Montly payment", loan.monthlyPayment, lineWidth));
-                financeData.Add(formatAmountLine(" - Interest %", loan.interestPercentage, lineWidth, 2));
-                financeData.Add(formatAmountLine(" - Yearly principal", loan.calculatePrincipal(12), lineWidth));
+                financeData.Add(Formatter.formatAmountLine(loan.title + " (" + loan.shortName + ")", loan.amount, lineWidth));
+                financeData.Add(Formatter.formatAmountLine(" - Monthly payment", loan.monthlyPayment, lineWidth));
+                financeData.Add(Formatter.formatAmountLine(" - Interest %", loan.interestPercentage, lineWidth, 2));
+                financeData.Add(Formatter.formatAmountLine(" - Yearly principal", loan.calculatePrincipal(12), lineWidth));
                 financeData.Add("");
             }
 
@@ -181,28 +185,13 @@ namespace Sock
             financeData.Add("");
             financeData.Add("~~~~~~~~~  Savings  ~~~~~~~~~~");
             financeData.Add("");
-            financeData.Add(formatAmountLine("Current savings", finance.currentSavings, lineWidth));
-            financeData.Add(formatAmountLine("Savings growth %", finance.savingsGrowthRate, lineWidth, 2));
-            financeData.Add(formatAmountLine("Yearly growth", finance.calculateSavings(12), lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Current savings", finance.currentSavings, lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Savings growth %", finance.savingsGrowthRate, lineWidth, 2));
+            financeData.Add(Formatter.formatAmountLine("Yearly growth", finance.calculateSavings(12), lineWidth));
 
             Render.renderColumnContent(financeData);
         }
 
-        /// -------------------------------------------------------------
-        ///
-        string formatAmountLine(string title, double amount, int width)
-        {
-            string formattedLine = title;
-            string numberFormatted = amount.ToString("N0", CultureInfo.CreateSpecificCulture("nb-NO"));
-
-            return formattedLine + new string(' ', width - (formattedLine.Length + numberFormatted.Length)) + numberFormatted;
-        }
-        string formatAmountLine(string title, double amount, int width, int decimals)
-        {
-            string formattedLine = title;
-            string numberFormatted = amount.ToString("N" + decimals.ToString(), CultureInfo.CreateSpecificCulture("nb-NO"));
-
-            return formattedLine + new string(' ', width - (formattedLine.Length + numberFormatted.Length)) + numberFormatted;
-        }
+        
     }
 }
