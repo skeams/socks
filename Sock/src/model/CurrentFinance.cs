@@ -7,6 +7,8 @@ namespace Sock
     {
         public List<Loan> loans;
         public List<FinanceItem> monthlyBudgetItems;
+        public double currentSavings;
+        public double savingsGrowthRate;
 
         readonly string interestDesc = ".interest";
         readonly string principalDesc = ".principal";
@@ -15,6 +17,8 @@ namespace Sock
         {
             this.loans = new List<Loan>();
             this.monthlyBudgetItems = new List<FinanceItem>();
+            this.currentSavings = 0;
+            this.savingsGrowthRate = 0;
         }
 
         /// -------------------------------------------------------------
@@ -106,6 +110,21 @@ namespace Sock
         public double getMonthlyBudgetSum()
         {
             return monthlyBudgetItems.Sum(item => item.amount);
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public double calculateSavings(int months)
+        {
+            double estimatedSavings = currentSavings;
+
+            for (int m = 0; m < months; m++)
+            {
+                estimatedSavings += (estimatedSavings * savingsGrowthRate / 100) / 12;
+                estimatedSavings += getMonthlyBudgetSum();
+            }
+
+            return estimatedSavings - currentSavings;
         }
     }
 }

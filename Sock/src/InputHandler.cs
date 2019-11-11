@@ -23,7 +23,7 @@ namespace Sock
         ///
         public static double processNumberInput(string inputText, double existingValue)
         {
-            string numberInputString = processInput(inputText + "[" + existingValue + "]");
+            string numberInputString = processInput(inputText + " [" + existingValue + "]");
             double newNumber;
 
             if (Double.TryParse(numberInputString, out newNumber))
