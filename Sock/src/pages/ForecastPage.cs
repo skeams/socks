@@ -42,7 +42,7 @@ namespace Sock
 
                 case "periods":
                     Render.renderStatus("Number of periods", false);
-                    this.periods = (int) InputHandler.processNumberInput("Periods", 24);
+                    this.periods = (int) InputHandler.processNumberInput("Periods", this.periods);
                     break;
             }
         }

@@ -90,7 +90,7 @@ namespace Sock
                 Console.Write(line);
 
                 rowIndex++;
-                if (rowIndex > (contentMaxY - contentMinY))
+                if (rowIndex > (contentMaxY - contentMinY - 1))
                 {
                     rowIndex = 0;
                     columnIndex++;
