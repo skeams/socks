@@ -8,7 +8,7 @@ namespace Sock
         public double monthlyPayment;
         public string shortName; // MUST BE UNIQUE AND IS USED AS IDENTIFIER
 
-        public Loan(string title, double amount, double interestPercentage, double monthlyPayment, string shortName) : base(title, amount)
+        public Loan(string title, string shortName, double amount, double interestPercentage, double monthlyPayment) : base(title, amount)
         {
             this.interestPercentage = interestPercentage;
             this.monthlyPayment = monthlyPayment;
@@ -42,7 +42,7 @@ namespace Sock
         ///
         public Loan clone()
         {
-            return new Loan(this.title, this.amount, this.interestPercentage, this.monthlyPayment, this.shortName);
+            return new Loan(this.title, this.shortName, this.amount, this.interestPercentage, this.monthlyPayment);
         }
     }
 }

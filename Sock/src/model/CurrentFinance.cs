@@ -11,6 +11,8 @@ namespace Sock
         public double currentSavings;
         public double savingsGrowthRate;
 
+        public string title;
+
         readonly string interestDesc = ".interest";
         readonly string principalDesc = ".principal";
 
@@ -21,6 +23,7 @@ namespace Sock
             this.monthlyIntrPrinc = new List<FinanceItem>();
             this.currentSavings = 0;
             this.savingsGrowthRate = 0;
+            this.title = "<No title given>";
         }
 
         /// -------------------------------------------------------------

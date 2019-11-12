@@ -72,7 +72,7 @@ namespace Sock
             double amount = InputHandler.processNumberInput("Enter loan amount", 0);
             double interest = InputHandler.processNumberInput("Enter loan interest %", 0);
             double monthlyPayment = InputHandler.processNumberInput("Enter monthly payment", 0);
-            finance.addLoan(new Loan(title, amount, interest, monthlyPayment, abr));
+            finance.addLoan(new Loan(title, abr, amount, interest, monthlyPayment));
         }
 
         /// -------------------------------------------------------------

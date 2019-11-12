@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sock
 {
-    public class SockRenderTest
+    public class FormatterTest
     {
         [Fact]
         public void testFormatLines()

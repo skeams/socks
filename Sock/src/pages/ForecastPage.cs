@@ -31,11 +31,11 @@ namespace Sock
         {
             switch (command)
             {
-                case "show years":
+                case "years":
                     this.isMonthBased = false;
                     break;
 
-                case "show months":
+                case "months":
                     this.isMonthBased = true;
                     break;
 
@@ -44,11 +44,6 @@ namespace Sock
                     break;
             }
         }
-
-        // string getPeriodText(int p)
-        // {
-
-        // }
 
         /// -------------------------------------------------------------
         ///
@@ -75,6 +70,7 @@ namespace Sock
             {
                 bool shouldPrint = this.isMonthBased | (p % 12 == 0);
                 now = now.AddMonths(1);
+
                 if (shouldPrint)
                 {
                     forecastData.Add("");
@@ -82,18 +78,35 @@ namespace Sock
                     forecastData.Add((p / (isMonthBased ? 1 : 12) + 1) + ": " + monthName + ", " + now.Year);
                 }
 
+                double monthlyLeftovers = monthlyBudgetSum;
                 foreach (Loan loan in loans)
                 {
-                    double interest = (-loan.amount * loan.interestPercentage / 100) / 12;
-                    loan.amount += (loan.monthlyPayment - interest);
-
-                    if (shouldPrint)
+                    if (loan.amount != 0)
                     {
-                        forecastData.Add(Formatter.formatAmountLine(loan.title, loan.amount, lineWidth));
+                        double interest = (-loan.amount * loan.interestPercentage / 100) / 12;
+                        loan.amount += (loan.monthlyPayment - interest);
+                        
+                        monthlyLeftovers -= loan.monthlyPayment;
+
+                        if (loan.amount > 0)
+                        {
+                            estimatedSavings += loan.amount;
+                            loan.amount = 0;
+                        }
+
+                        if (shouldPrint)
+                        {
+                            forecastData.Add(Formatter.formatAmountLine(loan.title, loan.amount, lineWidth));
+                        }
                     }
                 }
 
-
+                estimatedSavings = estimatedSavings + (estimatedSavings * (finance.savingsGrowthRate / 100) / 12);
+                estimatedSavings += monthlyLeftovers;
+                if (shouldPrint)
+                {
+                    forecastData.Add(Formatter.formatAmountLine("Savings", estimatedSavings, lineWidth));
+                }
             }
             
             Render.renderColumnContent(forecastData);
