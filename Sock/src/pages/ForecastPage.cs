@@ -17,8 +17,9 @@ namespace Sock
             this.finance = finance;
             this.pageInfo = new List<string>
             {
-                "Debt and Savings Forecast","",
-                "More info will follow.",
+                "Debt and Savings Forecast (" + finance.title + ")","",
+                "Regardless of period/view, the forecast will calculate a new interest and principal for each loan every month. " +
+                "When a loan is paid in full, the leftover payments will go into the savings growth.",
             };
 
             this.periods = 24;
@@ -40,7 +41,8 @@ namespace Sock
                     break;
 
                 case "periods":
-                    this.periods = (int) InputHandler.processNumberInput("Enter periods", 24);
+                    Render.renderStatus("Number of periods", false);
+                    this.periods = (int) InputHandler.processNumberInput("Periods", 24);
                     break;
             }
         }
@@ -109,6 +111,7 @@ namespace Sock
                 }
             }
             
+            Render.renderStatus("years | months | periods", false);
             Render.renderColumnContent(forecastData);
         }
     }

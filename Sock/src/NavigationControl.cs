@@ -14,7 +14,7 @@ namespace Sock
             this.dashboardPage = new DashboardPage(finance);
             this.forecastPage = new ForecastPage(finance);
 
-            this.currentPage = this.currentFinancePage;
+            this.currentPage = this.dashboardPage;
         }
 
         /// -------------------------------------------------------------

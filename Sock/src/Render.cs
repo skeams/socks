@@ -9,6 +9,8 @@ namespace Sock
         static readonly ConsoleColor bannerColor = ConsoleColor.DarkCyan;
         static readonly ConsoleColor textColor = ConsoleColor.White;
         static readonly ConsoleColor pageTitleColor = ConsoleColor.Magenta;
+        static readonly ConsoleColor statusColor = ConsoleColor.DarkGreen;
+        static readonly ConsoleColor errorColor = ConsoleColor.Red; 
 
         static readonly string frameVertical = "\u2551";
         static readonly string frameHorizontal = "\u2550";
@@ -34,6 +36,8 @@ namespace Sock
             " ___) | (_) | (__|   <\'__ \'",
             "|____/ \'___/ \'___|_|\'_\'___/",
         };
+
+        static string previousStatus = "";
 
         /// -------------------------------------------------------------
         ///
@@ -145,7 +149,7 @@ namespace Sock
         ///
         public static void renderPageInfo(List<string> infoLines)
         {
-            List<string> formattedPageInfo = formatLines(infoLines, Console.WindowWidth - (xPadding * 2) - 35);
+            List<string> formattedPageInfo = formatLines(infoLines, Console.WindowWidth - (xPadding * 2) - 39);
 
             for (int y = 0; y < formattedPageInfo.Count; y++)
             {
@@ -160,6 +164,21 @@ namespace Sock
                 Console.SetCursorPosition(xPadding + 37, yPadding + 2 + y);
                 Console.Write(formattedPageInfo[y]);
             }
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        /// Renders status text
+        ///
+        public static void renderStatus(string statusText, bool isError)
+        {
+            Console.SetCursorPosition(xPadding + 53, Console.WindowHeight - yPadding - 3);
+            Console.Write(new string(' ', previousStatus.Length));
+            Console.SetCursorPosition(xPadding + 53, Console.WindowHeight - yPadding - 3);
+            Console.ForegroundColor = isError ? errorColor : statusColor;
+            Console.Write(statusText);
+            previousStatus = statusText;
+            Console.ForegroundColor = textColor;
         }
 
         /// -------------------------------------------------------------
@@ -217,6 +236,17 @@ namespace Sock
                 Console.Write(frameHorizontal);
             }
             Console.Write(frameJoinLeft);
+
+            // Status divider line
+            Console.SetCursorPosition(xPadding + 50, yMax - 5);
+            Console.Write(frameJoinBottom);
+            for (int y = yMax - 4; y < yMax - 1; y++)
+            {
+                Console.SetCursorPosition(xPadding + 50, y);
+                Console.Write(frameVertical);
+            }
+            Console.SetCursorPosition(xPadding + 50, yMax - 1);
+            Console.Write(frameJoinTop);
 
             // Banner divider line
             Console.SetCursorPosition(xPadding + 35, yPadding);

@@ -5,7 +5,7 @@ namespace Sock
 {
     class SockMain
     {
-        static readonly string filePath = "datafiles/data.csv";
+        static readonly string filePath = "data.csv";
         
         static void Main(string[] args)
         {

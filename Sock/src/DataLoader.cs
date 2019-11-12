@@ -1,24 +1,22 @@
-using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Text;
 
 namespace Sock
 {
     public static class DataLoader
     {
+
         /// -------------------------------------------------------------
         ///
         public static string readFileContent(string filePath)
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
-                return File.ReadAllText(@filePath);
+                return "";
             }
             else
             {
-                return null;
-                // TODO: Add status that path was not found
-                // -----> Make a file loader page?
+                return File.ReadAllText(filePath);
             }
         }
 
@@ -26,14 +24,15 @@ namespace Sock
         ///
         public static void writeFileContent(string fileData, string filePath)
         {
-            if (File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
-                File.WriteAllText(@filePath, fileData);
+                FileStream fileStream = File.Create(filePath);
+                fileStream.Write(new UTF8Encoding(true).GetBytes(fileData), 0, fileData.Length);
+                fileStream.Close();
             }
             else
             {
-                // TODO: Add status that path was not found
-                // -----> Make a file loader page?
+                File.WriteAllText(filePath, fileData);
             }
         }
 
