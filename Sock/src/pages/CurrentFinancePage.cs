@@ -24,6 +24,18 @@ namespace Sock
         {
             switch (command)
             {
+                case "new goal":
+                    newGoalAction();
+                    break;
+
+                case "edit goal":
+                    editGoalAction();
+                    break;
+
+                case "delete goal":
+                    deleteGoalAction();
+                    break;
+                    
                 case "new item":
                     newItemAction();
                     break;
@@ -52,6 +64,51 @@ namespace Sock
                     editSavingsAction();
                     break;
             }
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public void newGoalAction()
+        {
+            Render.renderStatus("savings/debt", false);
+            string input = InputHandler.processInput("Goal type");
+            bool isSavingsGoal = false;
+            if (input.ToLower().Equals("savings"))
+            {
+                isSavingsGoal = true;
+            }
+
+            Render.renderStatus("Enter " + (isSavingsGoal ? "savings" : "debt") + " goal details", false);
+            string title = InputHandler.processInput("Title");
+            double amount =  InputHandler.processNumberInput("Amount", 0);
+            FinanceItem goal = new FinanceItem(title, amount);
+
+            if (isSavingsGoal)
+            {
+                this.currentBudget.savingsGoals.Add(goal);
+            }
+            else
+            {
+                this.currentBudget.debtGoals.Add(goal);
+            }
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public void editGoalAction()
+        {
+            // Render.renderStatus("Edit savings", false);
+            // currentBudget.currentSavings = InputHandler.processNumberInput("Savings amount", currentBudget.currentSavings);
+            // currentBudget.savingsGrowthRate = InputHandler.processNumberInput("Growth rate", currentBudget.savingsGrowthRate);
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public void deleteGoalAction()
+        {
+            // Render.renderStatus("Edit savings", false);
+            // currentBudget.currentSavings = InputHandler.processNumberInput("Savings amount", currentBudget.currentSavings);
+            // currentBudget.savingsGrowthRate = InputHandler.processNumberInput("Growth rate", currentBudget.savingsGrowthRate);
         }
 
         /// -------------------------------------------------------------
@@ -179,7 +236,7 @@ namespace Sock
             financeData.Add("");
             financeData.Add("");
             financeData.Add("");
-            financeData.Add("~~~~~~~~~~  Loans  ~~~~~~~~~~~");
+            financeData.Add("~~~~~~~~~~~  Debt  ~~~~~~~~~~~");
             financeData.Add("");
 
             foreach (Loan loan in currentBudget.loans)
@@ -200,7 +257,24 @@ namespace Sock
             financeData.Add(Formatter.formatAmountLine("Savings growth %", currentBudget.savingsGrowthRate, lineWidth, 2));
             financeData.Add(Formatter.formatAmountLine("Annual growth", currentBudget.calculateSavings(12), lineWidth));
 
-            Render.renderStatus("new/edit/delete item/loan | savings", false);
+            financeData.Add("");
+            financeData.Add("");
+            financeData.Add("");
+            financeData.Add("~~~~~~~~~~  Goals  ~~~~~~~~~~~");
+            financeData.Add("");
+            financeData.Add("Savings Goals");
+            foreach (FinanceItem savingsGoal in currentBudget.savingsGoals)
+            {
+                financeData.Add(Formatter.formatAmountLine(" - " + savingsGoal.title, savingsGoal.amount, lineWidth));
+            }
+            financeData.Add("");
+            financeData.Add("Debt Goals");
+            foreach (FinanceItem debtGoal in currentBudget.debtGoals)
+            {
+                financeData.Add(Formatter.formatAmountLine(" - " + debtGoal.title, debtGoal.amount, lineWidth));
+            }
+
+            Render.renderStatus("new/edit/delete item/loan/goal | savings", false);
             Render.renderColumnContent(financeData);
         }
 

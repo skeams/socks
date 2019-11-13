@@ -66,6 +66,7 @@ namespace Sock
             }
 
             System.DateTime now = System.DateTime.Now;
+            List<string> goalsAchieved = new List<string>();
 
             for (int p = 0; p < periods * (isMonthBased ? 1 : 12); p++)
             {
@@ -80,6 +81,8 @@ namespace Sock
                 }
 
                 double monthlyLeftovers = monthlyBudgetSum;
+                double debtSum = 0;
+
                 foreach (Loan loan in loans)
                 {
                     if (loan.amount != 0)
@@ -95,6 +98,8 @@ namespace Sock
                             loan.amount = 0;
                         }
 
+                        debtSum += loan.amount;
+
                         if (shouldPrint)
                         {
                             forecastData.Add(Formatter.formatAmountLine(loan.title, loan.amount, lineWidth));
@@ -107,6 +112,27 @@ namespace Sock
                 if (shouldPrint)
                 {
                     forecastData.Add(Formatter.formatAmountLine("Savings", estimatedSavings, lineWidth));
+                }
+
+                if (shouldPrint)
+                {
+                    foreach (FinanceItem goal in currentBudget.debtGoals)
+                    {
+                        if (debtSum >= goal.amount && !goalsAchieved.Contains(goal.title))
+                        {
+                            goalsAchieved.Add(goal.title);
+                            forecastData.Add('^' + Formatter.formatAmountLine(goal.title, goal.amount, lineWidth));
+                        }
+                    }
+
+                    foreach (FinanceItem goal in currentBudget.savingsGoals)
+                    {
+                        if (estimatedSavings >= goal.amount && !goalsAchieved.Contains(goal.title))
+                        {
+                            goalsAchieved.Add(goal.title);
+                            forecastData.Add('^' + Formatter.formatAmountLine(goal.title, goal.amount, lineWidth));
+                        }
+                    }
                 }
             }
             

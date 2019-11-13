@@ -8,6 +8,8 @@ namespace Sock
         public List<Loan> loans;
         public List<FinanceItem> monthlyBudgetItems;
         public List<FinanceItem> monthlyIntrPrinc;
+        public List<FinanceItem> debtGoals;
+        public List<FinanceItem> savingsGoals;
         public double currentSavings;
         public double savingsGrowthRate;
 
@@ -21,6 +23,8 @@ namespace Sock
             this.loans = new List<Loan>();
             this.monthlyBudgetItems = new List<FinanceItem>();
             this.monthlyIntrPrinc = new List<FinanceItem>();
+            this.debtGoals = new List<FinanceItem>();
+            this.savingsGoals = new List<FinanceItem>();
             this.currentSavings = 0;
             this.savingsGrowthRate = 0;
             this.title = "<No title given>";

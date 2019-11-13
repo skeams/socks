@@ -10,7 +10,8 @@ namespace Sock
         static readonly ConsoleColor textColor = ConsoleColor.White;
         static readonly ConsoleColor pageTitleColor = ConsoleColor.Magenta;
         static readonly ConsoleColor statusColor = ConsoleColor.DarkGreen;
-        static readonly ConsoleColor errorColor = ConsoleColor.Red; 
+        static readonly ConsoleColor errorColor = ConsoleColor.Red;
+        static readonly ConsoleColor highlightColor = ConsoleColor.DarkYellow;
 
         static readonly string frameVertical = "\u2551";
         static readonly string frameHorizontal = "\u2550";
@@ -87,7 +88,16 @@ namespace Sock
             foreach (string line in formattedContentLines)
             {
                 Console.SetCursorPosition(contentMinX + (columnIndex * (columnWidth + columnSpacing)), contentMinY + rowIndex + yContentPadding);
-                Console.Write(line);
+                if (line.Length > 0 && line[0].Equals('^')) // Highlight this line
+                {
+                    Console.ForegroundColor = highlightColor;
+                    Console.Write(line.Substring(1));
+                    Console.ForegroundColor = textColor;
+                }
+                else
+                {
+                    Console.Write(line);
+                }
 
                 rowIndex++;
                 if (rowIndex > (contentMaxY - contentMinY - 1))

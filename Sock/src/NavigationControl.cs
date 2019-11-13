@@ -55,7 +55,7 @@ namespace Sock
         {
             string budgetTitles = "";
             budgets.ForEach(budget => budgetTitles += budget.title + " | ");
-            budgetTitles += "(must be unique)";
+            budgetTitles += "(choose budget)";
             Render.renderStatus(budgetTitles, false);
             
             string budgetTitle = InputHandler.processInput("Switch to");
