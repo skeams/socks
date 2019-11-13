@@ -97,7 +97,7 @@ namespace Sock
             if (editBudget != null)
             {
                 Render.renderStatus("Edit budget (" + editBudget.title + ")", false);
-                currentBudget.title = InputHandler.processInput("Title");
+                editBudget.title = InputHandler.processInput("Title");
             }
         }
 

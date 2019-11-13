@@ -1,1 +1,1 @@
-name,Main;item,Main Salary,20000;loan,Mortgage,Mtg,-1500000,2.65,8000;savings,0,0#name,Testing;savings,0,0
+name,Main;item,Main Salary,20000;item,Buss,-800;loan,Mortgage,Mtg,-1500000,2.65,8000;savings,0,0#name,Testing 2;item,Drugs,-50000;savings,2000000,2.5

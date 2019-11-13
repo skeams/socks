@@ -12,11 +12,13 @@ namespace Sock
             Render.positionInputCursor();
             Console.Write(inputText + ": ");
             string result = Console.ReadLine();
+            // ,;# characters are used in the dataFormat and must be removed
+            string cleanedResult = System.Text.RegularExpressions.Regex.Replace(result, @"(,|;|#)", "");
 
             // Clear input
             Render.positionInputCursor();
             Console.Write(new string(' ', inputText.Length + 2 + result.Length));
-            return  result;
+            return cleanedResult;
         }
 
         /// -------------------------------------------------------------
