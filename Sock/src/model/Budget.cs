@@ -70,6 +70,13 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
+        public void sortBudgetItems()
+        {
+            this.monthlyBudgetItems = this.monthlyBudgetItems.OrderByDescending(item => System.Math.Abs(item.amount)).ToList();
+        }
+
+        /// -------------------------------------------------------------
+        ///
         public void refreshLoanBudgetItems(Loan loan)
         {
             double interest = loan.getInterestMonth();

@@ -148,6 +148,8 @@ namespace Sock
             }
         }
 
+
+
         /// -------------------------------------------------------------
         ///
         public override void renderContent()
@@ -158,6 +160,7 @@ namespace Sock
             financeData.Add("~~~~~~  Monthly Budget  ~~~~~~");
             financeData.Add("");
 
+            currentBudget.sortBudgetItems();
             foreach (FinanceItem budgetItem in currentBudget.monthlyBudgetItems)
             {
                 financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));

@@ -1,1 +1,1 @@
-name,Main;item,Main Salary,20000;item,Buss,-800;loan,Mortgage,Mtg,-1500000,2.65,8000;savings,0,0#name,Testing 2;item,Drugs,-50000;savings,2000000,2.5
+name,Emergency fund;item,Salary,32000;item,Food,-7000;item,Rent,-2600;item,Power,-1000;item,Buss,-800;item,WiFi,-300;loan,Mortgage,Mtg,-1500000,2.65,8000;loan,Student loan,Std,-160000,2.5,1100;savings,15000,0.5#name,test;savings,0,0
