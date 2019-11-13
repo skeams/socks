@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Sock
 {
-    public class CurrentFinance
+    public class Budget
     {
         public List<Loan> loans;
         public List<FinanceItem> monthlyBudgetItems;
@@ -16,7 +16,7 @@ namespace Sock
         readonly string interestDesc = ".interest";
         readonly string principalDesc = ".principal";
 
-        public CurrentFinance()
+        public Budget()
         {
             this.loans = new List<Loan>();
             this.monthlyBudgetItems = new List<FinanceItem>();

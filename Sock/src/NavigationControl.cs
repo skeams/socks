@@ -1,18 +1,24 @@
+using System.Collections.Generic;
+
 namespace Sock
 {
     public class NavigationControl
     {
         public Page currentPage;
 
-        CurrentFinancePage currentFinancePage;
+        BudgetPage budgetPage;
         DashboardPage dashboardPage;
         ForecastPage forecastPage;
 
-        public NavigationControl(CurrentFinance finance)
+        List<Budget> budgets;
+
+        public NavigationControl(List<Budget> budgets)
         {
-            this.currentFinancePage = new CurrentFinancePage(finance);
-            this.dashboardPage = new DashboardPage(finance);
-            this.forecastPage = new ForecastPage(finance);
+            this.budgets = budgets;
+
+            this.budgetPage = new BudgetPage(this.budgets[0]);
+            this.dashboardPage = new DashboardPage(this.budgets[0], this.budgets);
+            this.forecastPage = new ForecastPage(this.budgets[0]);
 
             this.currentPage = this.dashboardPage;
         }
@@ -24,10 +30,9 @@ namespace Sock
             switch (command)
             {
                 case "budget":
-                    this.currentPage = currentFinancePage;
+                    this.currentPage = budgetPage;
                     return true;
 
-                case "back":
                 case "home":
                     this.currentPage = dashboardPage;
                     return true;
@@ -35,9 +40,33 @@ namespace Sock
                 case "forecast":
                     this.currentPage = forecastPage;
                     return true;
+
+                case "switch":
+                    switchBudgetAction();
+                    return true;
             }
             
-            return false;
+            return false; // false will send command to page control
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        public void switchBudgetAction()
+        {
+            string budgetTitles = "";
+            budgets.ForEach(budget => budgetTitles += budget.title + " | ");
+            budgetTitles += "(must be unique)";
+            Render.renderStatus(budgetTitles, false);
+            
+            string budgetTitle = InputHandler.processInput("Switch to");
+            Budget switchBudget = budgets.Find(budget => budget.title.ToLower().Equals(budgetTitle.ToLower()));
+
+            if (switchBudget != null)
+            {
+                this.budgetPage.currentBudget = switchBudget;
+                this.dashboardPage.currentBudget = switchBudget;
+                this.forecastPage.currentBudget = switchBudget;
+            }
         }
     }
 }

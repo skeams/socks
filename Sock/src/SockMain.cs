@@ -10,9 +10,9 @@ namespace Sock
         static void Main(string[] args)
         {
             string data = DataLoader.readFileContent(filePath);
-            CurrentFinance finance = DataLoader.csvToCurrentFinance(data);
+            List<Budget> budgets = DataLoader.csvToBudgets(data);
 
-            NavigationControl navigation = new NavigationControl(finance);
+            NavigationControl navigation = new NavigationControl(budgets);
 
             string inputCommand = "";
 
@@ -21,7 +21,7 @@ namespace Sock
                 Render.clearScreen();
                 Render.renderFrame();
 
-                Render.renderPageInfo(navigation.currentPage.pageInfo);
+                Render.renderPageInfo(navigation.currentPage.pageInfo, navigation.currentPage.currentBudget.title);
                 navigation.currentPage.renderContent();
 
                 inputCommand = InputHandler.processInput("Command");
@@ -31,9 +31,11 @@ namespace Sock
                 }
             }
 
-            string storeData = DataLoader.currentFinanceToCsv(finance);
+            string storeData = DataLoader.budgetsToCsv(budgets);
             DataLoader.writeFileContent(storeData, filePath);
 
+            Render.positionInputCursor();
+            Console.WriteLine("Bye!");
             Console.SetCursorPosition(0, Console.WindowHeight);
         }
     }

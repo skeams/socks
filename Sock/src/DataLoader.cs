@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -38,78 +39,97 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        public static CurrentFinance csvToCurrentFinance(string fileData)
+        public static List<Budget> csvToBudgets(string fileData)
         {
-            CurrentFinance finance = new CurrentFinance();
+            List<Budget> budgets = new List<Budget>();
 
-            foreach (string line in fileData.Split(';'))
+            foreach (string budgetString in fileData.Split('#'))
             {
-                string[] lineParts = line.Split(',');
+                Budget budget = new Budget();
 
-                if (lineParts.Length > 0)
+                foreach (string line in budgetString.Split(';'))
                 {
-                    switch(lineParts[0])
+                    string[] lineParts = line.Split(',');
+
+                    if (lineParts.Length > 0)
                     {
-                        case "name":
-                            if (lineParts.Length == 2)
-                            {
-                                finance.title = lineParts[1];
-                            }
-                            break;
+                        switch(lineParts[0])
+                        {
+                            case "name":
+                                if (lineParts.Length == 2)
+                                {
+                                    budget.title = lineParts[1];
+                                }
+                                break;
 
-                        case "item":
-                            if (lineParts.Length == 3)
-                            {
-                                FinanceItem item = new FinanceItem(lineParts[1], double.Parse(lineParts[2]));
-                                finance.monthlyBudgetItems.Add(item);
-                            }
-                            break;
+                            case "item":
+                                if (lineParts.Length == 3)
+                                {
+                                    FinanceItem item = new FinanceItem(lineParts[1], double.Parse(lineParts[2]));
+                                    budget.monthlyBudgetItems.Add(item);
+                                }
+                                break;
 
-                        case "loan":
-                            if (lineParts.Length == 6)
-                            {
-                                finance.addLoan(new Loan(
-                                    lineParts[1],
-                                    lineParts[2],
-                                    double.Parse(lineParts[3]),
-                                    double.Parse(lineParts[4]),
-                                    double.Parse(lineParts[5])
-                                ));
-                            }
-                            break;
+                            case "loan":
+                                if (lineParts.Length == 6)
+                                {
+                                    budget.addLoan(new Loan(
+                                        lineParts[1],
+                                        lineParts[2],
+                                        double.Parse(lineParts[3]),
+                                        double.Parse(lineParts[4]),
+                                        double.Parse(lineParts[5])
+                                    ));
+                                }
+                                break;
 
-                        case "savings":
-                            if (lineParts.Length == 3)
-                            {
-                                finance.currentSavings = double.Parse(lineParts[1]);
-                                finance.savingsGrowthRate = double.Parse(lineParts[2]);
-                            }
-                            break;
+                            case "savings":
+                                if (lineParts.Length == 3)
+                                {
+                                    budget.currentSavings = double.Parse(lineParts[1]);
+                                    budget.savingsGrowthRate = double.Parse(lineParts[2]);
+                                }
+                                break;
+                        }
                     }
                 }
+
+                budgets.Add(budget);
             }
 
-            return finance;
+            return budgets;
         }
 
         /// -------------------------------------------------------------
         ///
-        public static string currentFinanceToCsv(CurrentFinance finance)
+        public static string budgetsToCsv(List<Budget> budgets)
         {
-            string csvResult = "name," + finance.title + ';';
+            string csvResult = "";
 
-            foreach (FinanceItem item in finance.monthlyBudgetItems)
+            for (int b = 0; b < budgets.Count; b++)
             {
-                csvResult += "item," + item.title + ',' + item.amount + ';';
+                csvResult += "name," + budgets[b].title + ';';
+
+                foreach (FinanceItem item in budgets[b].monthlyBudgetItems)
+                {
+                    csvResult += "item," + item.title + ',' + item.amount + ';';
+                }
+
+                foreach (Loan loan in budgets[b].loans)
+                {
+                    csvResult += "loan," + loan.title + ',' + loan.shortName + ',' + loan.amount+ ','
+                        + loan.interestPercentage + ',' + loan.monthlyPayment + ';';
+                }
+
+                csvResult += "savings," + budgets[b].currentSavings + ',' + budgets[b].savingsGrowthRate;
+
+                if (b < budgets.Count - 1)
+                {
+                    csvResult += '#';
+                }
             }
 
-            foreach (Loan loan in finance.loans)
-            {
-                csvResult += "loan," + loan.title + ',' + loan.shortName + ',' + loan.amount+ ','
-                    + loan.interestPercentage + ',' + loan.monthlyPayment + ';';
-            }
-
-            return csvResult + "savings," + finance.currentSavings + ',' + finance.savingsGrowthRate;
+            return csvResult;
         }
     }
 }

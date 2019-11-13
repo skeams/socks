@@ -2,18 +2,17 @@ using System.Collections.Generic;
 
 namespace Sock
 {
-    public class CurrentFinancePage : Page
+    public class BudgetPage : Page
     {
         public override List<string> pageInfo { get; set; }
-
-        CurrentFinance finance;
+        public override Budget currentBudget { get; set; }
     
-        public CurrentFinancePage(CurrentFinance finance)
+        public BudgetPage(Budget budget)
         {
-            this.finance = finance;
+            this.currentBudget = budget;
             this.pageInfo = new List<string>
             {
-                "Current Finance (" + finance.title + ")","",
+                "Budget","",
                 "Here you can update your monthly budget, loans and savings. Your monthly budget is automatically updated with loan interest/principal. " +
                 "Savings / Net Amount will automatically update your annual savings growth.",
             };
@@ -60,8 +59,8 @@ namespace Sock
         public void editSavingsAction()
         {
             Render.renderStatus("Edit savings", false);
-            finance.currentSavings = InputHandler.processNumberInput("Savings amount", finance.currentSavings);
-            finance.savingsGrowthRate = InputHandler.processNumberInput("Growth rate", finance.savingsGrowthRate);
+            currentBudget.currentSavings = InputHandler.processNumberInput("Savings amount", currentBudget.currentSavings);
+            currentBudget.savingsGrowthRate = InputHandler.processNumberInput("Growth rate", currentBudget.savingsGrowthRate);
         }
 
         /// -------------------------------------------------------------
@@ -74,7 +73,7 @@ namespace Sock
             double amount = InputHandler.processNumberInput("Amount", 0);
             double interest = InputHandler.processNumberInput("Interest %", 0);
             double monthlyPayment = InputHandler.processNumberInput("Monthly payment", 0);
-            finance.addLoan(new Loan(title, abr, amount, interest, monthlyPayment));
+            currentBudget.addLoan(new Loan(title, abr, amount, interest, monthlyPayment));
         }
 
         /// -------------------------------------------------------------
@@ -83,7 +82,7 @@ namespace Sock
         {
             Render.renderStatus("Which loan to edit?", false);
             string abr = InputHandler.processInput("Loan abr.");
-            Loan editLoan = finance.getLoan(abr);
+            Loan editLoan = currentBudget.getLoan(abr);
 
             if (editLoan != null)
             {
@@ -91,7 +90,7 @@ namespace Sock
                 editLoan.amount = InputHandler.processNumberInput("Amount", editLoan.amount);
                 editLoan.interestPercentage = InputHandler.processNumberInput("Interest %", editLoan.interestPercentage);
                 editLoan.monthlyPayment = InputHandler.processNumberInput("Monthly payment", editLoan.monthlyPayment);
-                finance.refreshLoanBudgetItems(editLoan);
+                currentBudget.refreshLoanBudgetItems(editLoan);
             }
         }
 
@@ -101,12 +100,12 @@ namespace Sock
         {
             Render.renderStatus("Which loan do you want to delete?", false);
             string abr = InputHandler.processInput("Loan abr.");
-            Loan deleteLoan = finance.getLoan(abr);
+            Loan deleteLoan = currentBudget.getLoan(abr);
 
             if (deleteLoan != null)
             {
-                finance.deleteLoanBudgetItems(deleteLoan);
-                finance.loans.Remove(deleteLoan);
+                currentBudget.deleteLoanBudgetItems(deleteLoan);
+                currentBudget.loans.Remove(deleteLoan);
             }
         }
 
@@ -117,7 +116,7 @@ namespace Sock
             Render.renderStatus("New budget item", false);
             string itemTitle = InputHandler.processInput("Title");
             double itemAmount = InputHandler.processNumberInput("Amount", 0);
-            finance.monthlyBudgetItems.Add(new FinanceItem(itemTitle, itemAmount));
+            currentBudget.monthlyBudgetItems.Add(new FinanceItem(itemTitle, itemAmount));
         }
 
         /// -------------------------------------------------------------
@@ -126,7 +125,7 @@ namespace Sock
         {
             Render.renderStatus("Which budget item to edit?", false);
             string itemName = InputHandler.processInput("Title");
-            FinanceItem editItem = finance.getItem(itemName);
+            FinanceItem editItem = currentBudget.getItem(itemName);
 
             if (editItem != null)
             {
@@ -141,11 +140,11 @@ namespace Sock
         {
             Render.renderStatus("Which budget item to delete?", false);
             string itemName = InputHandler.processInput("Title");
-            FinanceItem deleteItem = finance.getItem(itemName);
+            FinanceItem deleteItem = currentBudget.getItem(itemName);
 
             if (deleteItem != null)
             {
-                finance.monthlyBudgetItems.Remove(deleteItem); 
+                currentBudget.monthlyBudgetItems.Remove(deleteItem); 
             }
         }
 
@@ -159,19 +158,19 @@ namespace Sock
             financeData.Add("~~~~~~  Monthly Budget  ~~~~~~");
             financeData.Add("");
 
-            foreach (FinanceItem budgetItem in finance.monthlyBudgetItems)
+            foreach (FinanceItem budgetItem in currentBudget.monthlyBudgetItems)
             {
                 financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
             }
             financeData.Add("");
-            foreach (FinanceItem budgetItem in finance.monthlyIntrPrinc)
+            foreach (FinanceItem budgetItem in currentBudget.monthlyIntrPrinc)
             {
                 financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
             }
 
             financeData.Add("______________________________");
             financeData.Add("");
-            financeData.Add(Formatter.formatAmountLine("Saving/Net Amount", finance.getMonthlyNetSum(), lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Saving/Net Amount", currentBudget.getMonthlyNetSum(), lineWidth));
 
             financeData.Add("");
             financeData.Add("");
@@ -180,7 +179,7 @@ namespace Sock
             financeData.Add("~~~~~~~~~~  Loans  ~~~~~~~~~~~");
             financeData.Add("");
 
-            foreach (Loan loan in finance.loans)
+            foreach (Loan loan in currentBudget.loans)
             {
                 financeData.Add(Formatter.formatAmountLine(loan.title + " (" + loan.shortName + ")", loan.amount, lineWidth));
                 financeData.Add(Formatter.formatAmountLine(" - Monthly payment", loan.monthlyPayment, lineWidth));
@@ -194,9 +193,9 @@ namespace Sock
             financeData.Add("");
             financeData.Add("~~~~~~~~~  Savings  ~~~~~~~~~~");
             financeData.Add("");
-            financeData.Add(Formatter.formatAmountLine("Current savings", finance.currentSavings, lineWidth));
-            financeData.Add(Formatter.formatAmountLine("Savings growth %", finance.savingsGrowthRate, lineWidth, 2));
-            financeData.Add(Formatter.formatAmountLine("Annual growth", finance.calculateSavings(12), lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Current savings", currentBudget.currentSavings, lineWidth));
+            financeData.Add(Formatter.formatAmountLine("Savings growth %", currentBudget.savingsGrowthRate, lineWidth, 2));
+            financeData.Add(Formatter.formatAmountLine("Annual growth", currentBudget.calculateSavings(12), lineWidth));
 
             Render.renderStatus("new/edit/delete item/loan | savings", false);
             Render.renderColumnContent(financeData);

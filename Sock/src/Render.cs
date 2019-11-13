@@ -147,22 +147,24 @@ namespace Sock
         ///
         /// Renders Page info
         ///
-        public static void renderPageInfo(List<string> infoLines)
+        public static void renderPageInfo(List<string> infoLines, string budgetTitle)
         {
             List<string> formattedPageInfo = formatLines(infoLines, Console.WindowWidth - (xPadding * 2) - 39);
 
             for (int y = 0; y < formattedPageInfo.Count; y++)
             {
+                Console.SetCursorPosition(xPadding + 37, yPadding + 2 + y);
+
                 if (y == 0)
                 {
                     Console.ForegroundColor = pageTitleColor;
+                    Console.Write(formattedPageInfo[y] + " (" + budgetTitle + ")");
                 }
                 else if (y == 1)
                 {
                     Console.ForegroundColor = textColor;
+                    Console.Write(formattedPageInfo[y]);
                 }
-                Console.SetCursorPosition(xPadding + 37, yPadding + 2 + y);
-                Console.Write(formattedPageInfo[y]);
             }
         }
 

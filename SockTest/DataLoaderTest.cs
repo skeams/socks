@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Xunit;
 
 namespace Sock
@@ -5,16 +6,16 @@ namespace Sock
     public class DataLoaderTest
     {
         [Fact]
-        public void testCsvToCurrentFinance()
+        public void testCsvToBudget()
         {
-            CurrentFinance blueprint = new CurrentFinance();
+            Budget blueprint = new Budget();
             blueprint.monthlyBudgetItems.Add(new FinanceItem("Buss", -780));
             blueprint.addLoan(new Loan("Mortgage", "Mtg", -1500000, 2.65, 8000));
             blueprint.savingsGrowthRate = 3;
             blueprint.currentSavings = 50000;
             blueprint.title = "Martin";
 
-            CurrentFinance result = DataLoader.csvToCurrentFinance("name,Martin;item,Buss,-780;loan,Mortgage,Mtg,-1500000,2.65,8000;savings,50000,3");
+            Budget result = DataLoader.csvToBudgets("name,Martin;item,Buss,-780;loan,Mortgage,Mtg,-1500000,2.65,8000;savings,50000,3")[0];
 
             Assert.Equal(blueprint.title, result.title);
             Assert.Equal(blueprint.currentSavings, result.currentSavings);
@@ -26,18 +27,18 @@ namespace Sock
         }
 
          [Fact]
-        public void testCurrentFinanceToCsv()
+        public void testBudgetToCsv()
         {
-            CurrentFinance finance = new CurrentFinance();
+            Budget finance = new Budget();
             finance.monthlyBudgetItems.Add(new FinanceItem("Buss", -780));
             finance.addLoan(new Loan("Car loan", "Car", -80000, 6.5, 5000));
             finance.savingsGrowthRate = 5;
             finance.currentSavings = 20000;
             finance.title = "Ole";
 
-            string blueprint = "name,Ole;item,Buss,-780;loan,Car loan,Car,-80000,6.5,5000;savings,20000,5";
+            string blueprint = "name,Ole;item,Buss,-780;loan,Car loan,Car,-80000,6.5,5000;savings,20000,5#";
 
-            Assert.Equal(blueprint, DataLoader.currentFinanceToCsv(finance));
+            Assert.Equal(blueprint, DataLoader.budgetsToCsv(new List<Budget>{finance}));
         }
     }
 }

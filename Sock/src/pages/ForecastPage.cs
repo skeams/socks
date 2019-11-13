@@ -6,18 +6,17 @@ namespace Sock
     public class ForecastPage : Page
     {
         public override List<string> pageInfo { get; set; }
-
-        CurrentFinance finance;
+        public override Budget currentBudget { get; set; }
 
         int periods;
         bool isMonthBased;
     
-        public ForecastPage(CurrentFinance finance)
+        public ForecastPage(Budget budget)
         {
-            this.finance = finance;
+            this.currentBudget = budget;
             this.pageInfo = new List<string>
             {
-                "Debt and Savings Forecast (" + finance.title + ")","",
+                "Forecast","",
                 "Regardless of period/view, the forecast will calculate a new interest and principal for each loan every month. " +
                 "When a loan is paid in full, the leftover payments will go into the savings growth.",
             };
@@ -57,11 +56,11 @@ namespace Sock
             forecastData.Add("Forecast for " + periods + (isMonthBased ? " months" : " years"));
             forecastData.Add("");
 
-            double estimatedSavings = finance.currentSavings;
-            double monthlyBudgetSum = finance.getMonthlyBudgetItemsSum();
+            double estimatedSavings = currentBudget.currentSavings;
+            double monthlyBudgetSum = currentBudget.getMonthlyBudgetItemsSum();
 
             List<Loan> loans = new List<Loan>();
-            foreach (Loan existingLoan in finance.loans)
+            foreach (Loan existingLoan in currentBudget.loans)
             {
                 loans.Add(existingLoan.clone());
             }
@@ -103,7 +102,7 @@ namespace Sock
                     }
                 }
 
-                estimatedSavings = estimatedSavings + (estimatedSavings * (finance.savingsGrowthRate / 100) / 12);
+                estimatedSavings = estimatedSavings + (estimatedSavings * (currentBudget.savingsGrowthRate / 100) / 12);
                 estimatedSavings += monthlyLeftovers;
                 if (shouldPrint)
                 {
