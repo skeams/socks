@@ -13,6 +13,16 @@ namespace Sock
         static readonly ConsoleColor errorColor = ConsoleColor.Red;
         static readonly ConsoleColor highlightColor = ConsoleColor.DarkYellow;
 
+        public static readonly List<ConsoleColor> colors = new List<ConsoleColor>{
+            ConsoleColor.DarkGreen,
+            ConsoleColor.DarkRed,
+            ConsoleColor.DarkCyan,
+            ConsoleColor.DarkYellow,
+            ConsoleColor.Cyan,
+            ConsoleColor.Red,
+            ConsoleColor.DarkBlue
+        };
+
         static readonly string frameVertical = "\u2551";
         static readonly string frameHorizontal = "\u2550";
 
@@ -177,6 +187,44 @@ namespace Sock
                 {
                     Console.ForegroundColor = textColor;
                     Console.Write(formattedPageInfo[y]);
+                }
+            }
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        /// Renders Chart
+        ///
+        public static void renderChart(ConsoleColor[,] chart, List<FinanceItem> items)
+        {
+            int sidePadding = 40;
+            int startX = Console.WindowWidth - xPadding - (chart.GetLength(0) * 2) - sidePadding;
+            int startY = yPadding + 10;
+
+            for (int y = 0; y < chart.GetLength(0); y++)
+            {
+                for (int x = 0; x < chart.GetLength(1) * 2; x += 2)
+                {
+                    if (chart[y, x / 2] != ConsoleColor.Black)
+                    {
+                        Console.SetCursorPosition(startX + x, startY + y);
+                        Console.ForegroundColor = chart[y, x / 2];
+                        Console.Write("\u2588\u2588");
+                    }
+                }
+            }
+
+            int colorIndex = 0;
+            foreach (FinanceItem item in items)
+            {
+                if (item.amount < 0)
+                {
+                    Console.SetCursorPosition(Console.WindowWidth - xPadding - (sidePadding - 5), startY + colorIndex * 2);
+                    Console.ForegroundColor = Render.colors[colorIndex % 7];
+                    Console.Write("\u2588");
+                    Console.ForegroundColor = textColor;
+                    Console.Write(" : " + item.title);
+                    colorIndex++;
                 }
             }
         }

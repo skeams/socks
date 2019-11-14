@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Sock
@@ -106,6 +107,47 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
+        public List<FinanceItem> getBasicChartItems()
+        {
+            List<FinanceItem> basicChartItems = new List<FinanceItem>();
+            double nonDebtExpenses = 0;
+            double principals = 0;
+            double interests = 0;
+            double saving = 0;
+            foreach (FinanceItem item in currentBudget.monthlyBudgetItems.Concat(currentBudget.monthlyIntrPrinc))
+            {
+                saving += item.amount;
+
+                if (item.amount > 0)
+                {
+                    basicChartItems.Add(item);
+                }
+                else
+                {
+                    if (item.title.Contains(".interest"))
+                    {
+                        interests += item.amount;
+                    }
+                    else if (item.title.Contains(".principal"))
+                    {
+                        principals += item.amount;
+                    } else
+                    {
+                        nonDebtExpenses += item.amount;
+                    }
+                }
+            }
+
+            basicChartItems.Add(new FinanceItem("No-debt expenses", nonDebtExpenses));
+            basicChartItems.Add(new FinanceItem("Interest", interests));
+            basicChartItems.Add(new FinanceItem("Principal", principals));
+            basicChartItems.Add(new FinanceItem("Savings", -saving));
+
+            return basicChartItems;
+        }
+
+        /// -------------------------------------------------------------
+        ///
         public override void renderContent()
         {
             List<string> lines = new List<string>
@@ -125,6 +167,10 @@ namespace Sock
                 lines.Add(" - " + budget.title);
             }
 
+            List<FinanceItem> chartItems = getBasicChartItems();
+            PieChart simpleChart = new PieChart(10, chartItems);
+            
+            Render.renderChart(simpleChart.chart, chartItems);
             Render.renderColumnContent(lines);
         }
     }
