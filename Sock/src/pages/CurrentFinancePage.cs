@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Sock
@@ -228,19 +229,17 @@ namespace Sock
             }
         }
 
-
-
         /// -------------------------------------------------------------
         ///
         public override void renderContent()
         {
             int lineWidth = 30;
+            currentBudget.sortBudgetItems();
 
             List<string> financeData = new List<string>();
             financeData.Add("~~~~~~  Monthly Budget  ~~~~~~");
             financeData.Add("");
 
-            currentBudget.sortBudgetItems();
             foreach (FinanceItem budgetItem in currentBudget.monthlyBudgetItems)
             {
                 financeData.Add(Formatter.formatAmountLine(budgetItem.title, budgetItem.amount, lineWidth));
@@ -302,6 +301,15 @@ namespace Sock
             {
                 financeData.Add(Formatter.formatAmountLine(" - " + debtGoal.title, debtGoal.amount, lineWidth));
             }
+
+            List<FinanceItem> chartItems = currentBudget.monthlyBudgetItems.ToList().Concat(currentBudget.monthlyIntrPrinc).ToList();
+            chartItems.Add(new FinanceItem(
+                "Savings",
+                -currentBudget.getMonthlyNetSum()
+            ));
+            PieChart simpleChart = new PieChart(10, chartItems);
+            
+            Render.renderChart(simpleChart.chart, chartItems);
 
             Render.renderColumnContent(financeData);
         }

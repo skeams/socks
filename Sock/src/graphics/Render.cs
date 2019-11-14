@@ -14,13 +14,18 @@ namespace Sock
         static readonly ConsoleColor highlightColor = ConsoleColor.DarkYellow;
 
         public static readonly List<ConsoleColor> colors = new List<ConsoleColor>{
-            ConsoleColor.DarkGreen,
-            ConsoleColor.DarkRed,
-            ConsoleColor.DarkCyan,
             ConsoleColor.DarkYellow,
+            ConsoleColor.DarkBlue,
+            ConsoleColor.DarkGray,
+            ConsoleColor.DarkCyan,
+            ConsoleColor.DarkGreen,
+            ConsoleColor.DarkMagenta,
+            // ConsoleColor.Blue,
+            // ConsoleColor.DarkRed,
+            ConsoleColor.Green,
+            ConsoleColor.Magenta,
             ConsoleColor.Cyan,
-            ConsoleColor.Red,
-            ConsoleColor.DarkBlue
+            ConsoleColor.DarkRed,
         };
 
         static readonly string frameVertical = "\u2551";
@@ -220,7 +225,7 @@ namespace Sock
                 if (item.amount < 0)
                 {
                     Console.SetCursorPosition(Console.WindowWidth - xPadding - (sidePadding - 5), startY + colorIndex * 2);
-                    Console.ForegroundColor = Render.colors[colorIndex % 7];
+                    Console.ForegroundColor = Render.colors[colorIndex % Render.colors.Count];
                     Console.Write("\u2588");
                     Console.ForegroundColor = textColor;
                     Console.Write(" : " + item.title);

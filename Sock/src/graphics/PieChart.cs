@@ -49,7 +49,7 @@ namespace Sock
                         {
                             if (isPointInSector(radius, x - radius + 0.5f, y - radius + 0.5f, percent, currentAngle))
                             {
-                                chart[y, x] = Render.colors[colorIndex % 7];
+                                chart[y, x] = Render.colors[colorIndex % Render.colors.Count];
                             }
                         }
                     }
@@ -74,7 +74,7 @@ namespace Sock
             // Calculate polar co-ordinates 
             float polarradius = (float) Math.Sqrt(x * x + y * y); 
             
-            float angle = (float) Math.Atan2(x, y) * (float)(180 / Math.PI) + 180;
+            float angle = (float) Math.Atan2(x, y) * -1 * (float)(180 / Math.PI) + 180;
 
             return angle >= startAngle && angle <= endAngle && polarradius < radius;
         } 
