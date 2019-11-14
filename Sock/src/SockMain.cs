@@ -20,7 +20,7 @@ namespace Sock
             {
                 Render.clearScreen();
                 Render.renderFrame();
-
+                Render.renderStatus();
                 Render.renderPageInfo(navigation.currentPage.pageInfo, navigation.currentPage.currentBudget.title);
                 navigation.currentPage.renderContent();
 

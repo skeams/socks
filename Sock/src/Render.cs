@@ -29,6 +29,9 @@ namespace Sock
         static readonly int xPadding = 3;
         static readonly int yPadding = 1;
 
+        public static string currentStatus = "";
+        public static bool statusIsWarning = false;
+
         static readonly string[] banner =
         {
             " ____             _",
@@ -180,17 +183,28 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
-        /// Renders status text
+        /// Renders status
         ///
-        public static void renderStatus(string statusText, bool isError)
+        public static void renderStatus()
         {
             Console.SetCursorPosition(xPadding + 53, Console.WindowHeight - yPadding - 3);
             Console.Write(new string(' ', previousStatus.Length));
             Console.SetCursorPosition(xPadding + 53, Console.WindowHeight - yPadding - 3);
-            Console.ForegroundColor = isError ? errorColor : statusColor;
-            Console.Write(statusText);
-            previousStatus = statusText;
+            Console.ForegroundColor = statusIsWarning ? errorColor : statusColor;
+            Console.Write(currentStatus);
+            previousStatus = currentStatus;
             Console.ForegroundColor = textColor;
+        }
+
+        /// -------------------------------------------------------------
+        ///
+        /// Renders status text
+        ///
+        public static void setStatus(string statusText, bool isError)
+        {
+            currentStatus = statusText;
+            statusIsWarning = isError;
+            renderStatus();
         }
 
         /// -------------------------------------------------------------

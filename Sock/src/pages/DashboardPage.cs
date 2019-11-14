@@ -6,11 +6,14 @@ namespace Sock
     {
         public override List<string> pageInfo { get; set; }
         public override Budget currentBudget { get; set; }
+        public override string defaultStatus { get; set; }
         
         List<Budget> budgets;
 
         public DashboardPage(Budget budget, List<Budget> budgets)
         {
+            this.defaultStatus = "new/edit/delete";
+
             this.currentBudget = budget;
             this.budgets = budgets;
             this.pageInfo = new List<string>
@@ -44,7 +47,7 @@ namespace Sock
         ///
         public void deleteBudgetAction()
         {
-            Render.renderStatus("Which budget do you want to delete?", false);
+            Render.setStatus("Which budget do you want to delete?", false);
             string deleteTitle = InputHandler.processInput("Title");
 
             Budget deleteBudget = null;
@@ -71,7 +74,7 @@ namespace Sock
         ///
         public void newBudgetAction()
         {
-            Render.renderStatus("Enter budget title", false);
+            Render.setStatus("Enter budget title", false);
             Budget newBudget = new Budget();
             newBudget.title = InputHandler.processInput("Title");
             budgets.Add(newBudget);
@@ -81,7 +84,7 @@ namespace Sock
         ///
         public void editTitleAction()
         {
-            Render.renderStatus("Which budget do you want to edit?", false);
+            Render.setStatus("Which budget do you want to edit?", false);
             string editTitle = InputHandler.processInput("Title");
 
             Budget editBudget = null;
@@ -96,7 +99,7 @@ namespace Sock
 
             if (editBudget != null)
             {
-                Render.renderStatus("Edit budget (" + editBudget.title + ")", false);
+                Render.setStatus("Edit budget (" + editBudget.title + ")", false);
                 editBudget.title = InputHandler.processInput("Title");
             }
         }
@@ -105,8 +108,6 @@ namespace Sock
         ///
         public override void renderContent()
         {
-            Render.renderStatus("new/edit/delete", false);
-
             List<string> lines = new List<string>
             {
                 "Welcome to Socks!", "", "To see and update your current budget and monthly budget, go to the Current Finance page (budget).","",

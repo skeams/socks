@@ -7,12 +7,15 @@ namespace Sock
     {
         public override List<string> pageInfo { get; set; }
         public override Budget currentBudget { get; set; }
+        public override string defaultStatus { get; set; }
 
         int periods;
         bool isMonthBased;
     
         public ForecastPage(Budget budget)
         {
+            this.defaultStatus = "years | months | periods";
+
             this.currentBudget = budget;
             this.pageInfo = new List<string>
             {
@@ -40,7 +43,7 @@ namespace Sock
                     break;
 
                 case "periods":
-                    Render.renderStatus("Number of periods", false);
+                    Render.setStatus("Number of periods", false);
                     this.periods = (int) InputHandler.processNumberInput("Periods", this.periods);
                     break;
             }
@@ -136,7 +139,6 @@ namespace Sock
                 }
             }
             
-            Render.renderStatus("years | months | periods", false);
             Render.renderColumnContent(forecastData);
         }
     }

@@ -21,32 +21,43 @@ namespace Sock
             this.forecastPage = new ForecastPage(this.budgets[0]);
 
             this.currentPage = this.dashboardPage;
+            Render.setStatus(this.currentPage.defaultStatus, false);
         }
 
         /// -------------------------------------------------------------
         ///
         public bool navigate(string command)
         {
+            bool didNavigate = false;
             switch (command)
             {
                 case "budget":
                     this.currentPage = budgetPage;
-                    return true;
+                    didNavigate = true;
+                    break;
 
                 case "home":
                     this.currentPage = dashboardPage;
-                    return true;
+                    didNavigate = true;
+                    break;
 
                 case "forecast":
                     this.currentPage = forecastPage;
-                    return true;
+                    didNavigate = true;
+                    break;
 
                 case "switch":
                     switchBudgetAction();
-                    return true;
+                    didNavigate = true;
+                    break;
             }
-            
-            return false; // false will send command to page control
+
+            if (didNavigate)
+            {
+                Render.setStatus(this.currentPage.defaultStatus, false);
+            }
+
+            return didNavigate; // false will send command to page control
         }
 
         /// -------------------------------------------------------------
@@ -56,7 +67,7 @@ namespace Sock
             string budgetTitles = "";
             budgets.ForEach(budget => budgetTitles += budget.title + " | ");
             budgetTitles += "(choose budget)";
-            Render.renderStatus(budgetTitles, false);
+            Render.setStatus(budgetTitles, false);
             
             string budgetTitle = InputHandler.processInput("Switch to");
             Budget switchBudget = budgets.Find(budget => budget.title.ToLower().Equals(budgetTitle.ToLower()));
