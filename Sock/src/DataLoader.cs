@@ -39,6 +39,16 @@ namespace Sock
 
         /// -------------------------------------------------------------
         ///
+        public static void updateBackup(string filePath, string backupPath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.Copy(filePath, backupPath, true);
+            }
+        }
+
+        /// -------------------------------------------------------------
+        ///
         public static List<Budget> csvToBudgets(string fileData)
         {
             List<Budget> budgets = new List<Budget>();
@@ -90,6 +100,26 @@ namespace Sock
                                     budget.savingsGrowthRate = double.Parse(lineParts[2]);
                                 }
                                 break;
+
+                            case "goal":
+                                if (lineParts.Length == 4)
+                                {
+                                    if (lineParts[1].Equals("s"))
+                                    {
+                                        budget.savingsGoals.Add(new FinanceItem(
+                                            lineParts[2],
+                                            double.Parse(lineParts[3])
+                                        ));
+                                    }
+                                    else
+                                    {
+                                        budget.debtGoals.Add(new FinanceItem(
+                                            lineParts[2],
+                                            double.Parse(lineParts[3])
+                                        ));
+                                    }
+                                }
+                                break;
                         }
                     }
                 }
@@ -108,20 +138,30 @@ namespace Sock
 
             for (int b = 0; b < budgets.Count; b++)
             {
-                csvResult += "name," + budgets[b].title + ';';
+                csvResult += "name," + budgets[b].title;
 
                 foreach (FinanceItem item in budgets[b].monthlyBudgetItems)
                 {
-                    csvResult += "item," + item.title + ',' + item.amount + ';';
+                    csvResult += ";item," + item.title + ',' + item.amount;
                 }
 
                 foreach (Loan loan in budgets[b].loans)
                 {
-                    csvResult += "loan," + loan.title + ',' + loan.shortName + ',' + loan.amount+ ','
-                        + loan.interestPercentage + ',' + loan.monthlyPayment + ';';
+                    csvResult += ";loan," + loan.title + ',' + loan.shortName + ',' + loan.amount+ ','
+                        + loan.interestPercentage + ',' + loan.monthlyPayment;
                 }
 
-                csvResult += "savings," + budgets[b].currentSavings + ',' + budgets[b].savingsGrowthRate;
+                csvResult += ";savings," + budgets[b].currentSavings + ',' + budgets[b].savingsGrowthRate;
+
+                foreach (FinanceItem goal in budgets[b].savingsGoals)
+                {
+                    csvResult += ";goal,s," + goal.title + ',' + goal.amount;
+                }
+
+                foreach (FinanceItem goal in budgets[b].debtGoals)
+                {
+                    csvResult += ";goal,d," + goal.title + ',' + goal.amount;
+                }
 
                 if (b < budgets.Count - 1)
                 {

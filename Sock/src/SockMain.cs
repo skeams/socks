@@ -6,6 +6,7 @@ namespace Sock
     class SockMain
     {
         static readonly string filePath = "data.csv";
+        static readonly string backupPath = "backup.csv";
         
         static void Main(string[] args)
         {
@@ -32,6 +33,7 @@ namespace Sock
             }
 
             string storeData = DataLoader.budgetsToCsv(budgets);
+            DataLoader.updateBackup(filePath, backupPath);
             DataLoader.writeFileContent(storeData, filePath);
 
             Render.positionInputCursor();

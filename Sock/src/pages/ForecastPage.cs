@@ -24,7 +24,7 @@ namespace Sock
                 "When a loan is paid in full, the leftover payments will go into the savings growth.",
             };
 
-            this.periods = 24;
+            this.periods = 60;
             this.isMonthBased = true;
         }
 
